@@ -33,4 +33,4 @@ In this assignment, you'll create a web app that lets users view and leave comme
 
 * [MongoDB Documentation](https://docs.mongodb.com/manual/)
 * [Mongoose Documentation](http://mongoosejs.com/docs/api.html)
-* [Cheerio Documentation](https://github.com/cheeriojs/cheerio)
+* [Cheerio Documentation](https://github.com/cheeriojs/cheerio)cd 
