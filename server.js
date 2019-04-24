@@ -30,6 +30,9 @@ You can use app.use() to specify middleware as the callback function.
 Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions
 */
 
+// require routes from routes.js in order to render handlebars files 
+require("./config/routes");
+
 // Register `hbs.engine` with the Express app
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -44,52 +47,48 @@ app.use(express.json());
 app.use(router);
 
 // Connect to the Mongo DB 
-mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true});
-// var db = 'mongodb://localhost/my_database';
-// mongoose.connect(db, function(error) {
-//   if(error) {
-//     console.log(error);
-//   }
-//   else {
-//     console.log('mongoose connected');
-//   }
-// });
+// mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true});
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
 
 
 // What it the server.js file doing?
-console.log("\n********************\n" +
-        "Grabbing side nav 'text', 'link' and 'class'\n" +
-        "from w3schools.com :" +
-        "\n**********************\n");
+// console.log("\n********************\n" +
+//         "Grabbing side nav 'text', 'link' and 'class'\n" +
+//         "from w3schools.com :" +
+//         "\n**********************\n");
 
 // Make a request via axios for w3schools.com to grab the HTML body from this site
 // The page's response is passed as our promise argument
-axios.get("https://www.w3schools.com/").then(function(response) {
+// axios.get("https://www.w3schools.com/").then(function(response) {
 
     // IMOPRTANT STEP HERE
     // Load the response into cheerio & save it into variable '$'
     // Notes: '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-    var $ = cheerio.load(response.data);
+    // var $ = cheerio.load(response.data);
 
     // An empty array to save the data that we'll scrape
-    var results = [];
+    // var results = [];
 
     // Now, we use cheerio to grab the desired tag/s
     // Notes: (i: iterator. element: the current element)
-    $("nav a").each(function(i, element) {
-        var text = $(element).text();
-        var link = $(element).attr("href");
+    // $("nav a").each(function(i, element) {
+    //     var text = $(element).text();
+    //     var link = $(element).attr("href");
         // var cls = $(element).attr("class");
-        results.push({
-          text: text,
-          link: "https://www.w3schools.com" + link,
+        // results.push({
+        //   text: text,
+        //   link: "https://www.w3schools.com" + link,
           // class: cls
-        });
-    }); // grabbing tags with cheerio ends
+        // });
+    // }); // grabbing tags with cheerio ends
 
     // Log the results once you've looped through each of the elements found with cheerio
-    console.log(results);
-}); // request via axios for w3schools.com ends
+    // console.log(results);
+// }); // request via axios for w3schools.com ends
 
 app.listen(process.env.PORT || 3000, function() {
   console.log("App listening on PORT: " + PORT);  //app listening ✓
