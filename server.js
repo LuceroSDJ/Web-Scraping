@@ -4,6 +4,13 @@ var axios = require("axios");
 
 var express = require("express");
 var exphbs  = require('express-handlebars');
+const mongoose = require('mongoose');
+/* Documentation: Connecting to MongoDB
+First, we need to define a connection. 
+If your app uses only one database, you should use mongoose.connect. 
+If you need to create additional connections, use mongoose.createConnection.
+Both connect and createConnection take a mongodb:// URI, or the parameters host, database, port, options.
+*/
 
 // set up port  to 3000 or process.env.PORT for deployment
 var PORT = process.env.PORT || 3000;
@@ -35,6 +42,18 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(router);
+
+// Connect to the Mongo DB 
+mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true});
+// var db = 'mongodb://localhost/my_database';
+// mongoose.connect(db, function(error) {
+//   if(error) {
+//     console.log(error);
+//   }
+//   else {
+//     console.log('mongoose connected');
+//   }
+// });
 
 
 // What it the server.js file doing?
