@@ -15,6 +15,9 @@ Both connect and createConnection take a mongodb:// URI, or the parameters host,
 // set up port  to 3000 or process.env.PORT for deployment
 var PORT = process.env.PORT || 3000;
 
+// Require all models
+var db = require("./models");
+
 // initialize express
 var app = express();
 
