@@ -3,6 +3,7 @@ var cheerio = require("cheerio");
 var axios = require("axios");
 
 var express = require("express");
+var exphbs  = require('express-handlebars');
 
 // set up port  to 3000 or process.env.PORT for deployment
 var PORT = process.env.PORT || 3000;
@@ -22,13 +23,18 @@ You can use app.use() to specify middleware as the callback function.
 Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions
 */
 
+// Register `hbs.engine` with the Express app
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+// documentation: create views/layouts/main.handlebars
+
 // create publi static folder
 app.use(express.static(__dirname + "/public"));
 
 //Set up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(router);
 
 
 // What it the server.js file doing?
