@@ -30,7 +30,7 @@ const CaptionSchema = new Schema({
 
 // This creates our model from the above schema, using mongoose's model method
 //  mongoose.model('ModelName', mySchema)
-const Caption= mongoose.model("Caption", UserSchema);
+const Caption= mongoose.model("Caption", CaptionSchema);
 
 // Export the User model
 module.exports = Caption;

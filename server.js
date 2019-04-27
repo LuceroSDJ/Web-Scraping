@@ -1,3 +1,4 @@
+// **** Our scraping tools!!! ****
 //require npm dependencies
 var cheerio = require("cheerio");
 var axios = require("axios");
@@ -5,26 +6,10 @@ var axios = require("axios");
 var express = require("express");
 var exphbs  = require('express-handlebars');
 const mongoose = require('mongoose');
-/* Documentation: Connecting to MongoDB
-First, we need to define a connection. 
-If your app uses only one database, you should use mongoose.connect. 
-If you need to create additional connections, use mongoose.createConnection.
-Both connect and createConnection take a mongodb:// URI, or the parameters host, database, port, options.
-*/
-
-// set up port  to 3000 or process.env.PORT for deployment
-var PORT = process.env.PORT || 3000;
-
-// Require all models
-var db = require("./models");
 
 // initialize express
 var app = express();
-
-// set up an Express Router since we need to access our routes from a different file
-/* Documentation: Router-level middleware works in the same way as application-level middleware, 
-except it is bound to an instance of express.Router(). */
-var router = express.Router();
+// require routes from routes.js in order to render handlebars files 
 /* ======= Documentation: ==========
 Routing refers to how an application’s endpoints (URIs) respond to client requests.
 You define routing using methods of the Express app object that correspond to HTTP methods; 
@@ -32,31 +17,51 @@ for example, app.get() to handle GET requests and app.post to handle POST reques
 You can use app.use() to specify middleware as the callback function.
 Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions
 */
+require("./config/routes")(app);
 
-// require routes from routes.js in order to render handlebars files 
-require("./config/routes");
+// Require all models
+var db = require("./models");
 
-// Register `hbs.engine` with the Express app
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
-// documentation: create views/layouts/main.handlebars
+// require scrape & our two controllers
+var scrape = require("./scrape/scrape");
+
+// set up port  to 3000 or process.env.PORT for deployment
+var PORT = process.env.PORT || 3000;
+
+
+// Configure middleware
+//Set up the Express app to handle data parsing
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // create publi static folder
 app.use(express.static(__dirname + "/public"));
 
-//Set up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(router);
-
+/* Documentation: Connecting to MongoDB
+First, we need to define a connection. 
+If your app uses only one database, you should use mongoose.connect. 
+If you need to create additional connections, use mongoose.createConnection.
+Both connect and createConnection take a mongodb:// URI, or the parameters host, database, port, options.
+*/
 // Connect to the Mongo DB 
 // mongoose.connect('mongodb://localhost/my_database', {useNewUrlParser: true});
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-mongoose.connect(MONGODB_URI, {useNewUrlParser: true});
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  // debug cli mssg: [(node:1336) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.]
+  useCreateIndex: true
+});
 
+// Register `hbs.engine` with the Express app
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+// documentation: create views/layouts/main.handlebars
+
+// ============= ROUTES ===========================
 
 // What it the server.js file doing?
 // console.log("\n********************\n" +
