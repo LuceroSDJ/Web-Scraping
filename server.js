@@ -64,39 +64,53 @@ app.set('view engine', 'handlebars');
 // ============= ROUTES ===========================
 
 // What it the server.js file doing?
-// console.log("\n********************\n" +
-//         "Grabbing side nav 'text', 'link' and 'class'\n" +
-//         "from w3schools.com :" +
-//         "\n**********************\n");
+console.log("\n********************\n" +
+        "Grabbing side nav 'text', 'link' and 'class'\n" +
+        "from wsj.com :" +
+        "\n**********************\n");
 
-// Make a request via axios for w3schools.com to grab the HTML body from this site
-// The page's response is passed as our promise argument
-// axios.get("https://www.w3schools.com/").then(function(response) {
+// A GET route for scraping the echoJS website
+app.get("/scrape", function(req, res) {
+  // First, we grab the body of the html with axios
+  axios.get("https://www.wsj.com/").then(function(response) {
+    // Load the HTML into cheerio and save it to a variable
+    // '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
+    var $ = cheerio.load(response.data);
 
-    // IMOPRTANT STEP HERE
-    // Load the response into cheerio & save it into variable '$'
-    // Notes: '$' becomes a shorthand for cheerio's selector commands, much like jQuery's '$'
-    // var $ = cheerio.load(response.data);
+    // Now, we grab every class=cb-row within the corresponding div tag, and do the following:
+    $("div .cb-row").each(function(i, element) {
+      // Save an empty result object
+      var result = {};
+      //var title = $(element).children().find("a").text().trim();
+      result.title = $(this)
+      .children()
+      .find("a")
+      .text()
+      .trim();
+      //var link = $(element).find("h3 a").attr("href");
+      result.link = $(this)
+      .find("h3 a")
+      .attr("href");
+      //var summary = $(element).find("p span").text();
+      result.summary = $(this)
+      .find("p span")
+      .text();
 
-    // An empty array to save the data that we'll scrape
-    // var results = [];
+      // Create a new Article using the `result` object built from scraping
+      db.Caption.create(result)
+        .then(function(dbCaption) {
+          console.log(dbCaption);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    }); //cheerio grab html ends
+    // send message to client
+    res.send("Scrape complete!");  //works as expected
+  }); //axios.get ends
+}); //app.get /scrape ends
 
-    // Now, we use cheerio to grab the desired tag/s
-    // Notes: (i: iterator. element: the current element)
-    // $("nav a").each(function(i, element) {
-    //     var text = $(element).text();
-    //     var link = $(element).attr("href");
-        // var cls = $(element).attr("class");
-        // results.push({
-        //   text: text,
-        //   link: "https://www.w3schools.com" + link,
-          // class: cls
-        // });
-    // }); // grabbing tags with cheerio ends
 
-    // Log the results once you've looped through each of the elements found with cheerio
-    // console.log(results);
-// }); // request via axios for w3schools.com ends
 
 app.listen(process.env.PORT || 3000, function() {
   console.log("App listening on PORT: " + PORT);  //app listening ✓
