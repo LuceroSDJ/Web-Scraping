@@ -12,7 +12,7 @@ const NoteSchema = new Schema({
     captionIDs: [
         {
           type: Schema.Types.ObjectId,
-          ref: "Caption"
+          ref: "Article"
         }
     ],
     title: String,

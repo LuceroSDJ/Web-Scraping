@@ -1,6 +1,6 @@
 // Exporting an object containing all of our models
 
 module.exports = {
-    Caption: require("./captionSchema"),
+    Article: require("./captionSchema"),
     Note: require("./noteSchema")
 };
