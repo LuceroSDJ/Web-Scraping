@@ -102,46 +102,49 @@ console.log("\n********************\n" +
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   
-  axios.get("http://www.echojs.com/").then(function(response) {
+  axios.get("https://www.npr.org/sections/music-videos/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
-    $("article h2").each(function(i, element) {
+    $("article").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
-        .children("a")
-        .text();
+        .children()
+        .find("h2")
+        .text()
+        .trim();
       result.link = $(this)
-        .children("a")
+        .children().find("h2 a")
         .attr("href");
-      // result.summary = $(this)
-      //   .children("p span")
-      //   .text();
+      result.summary = $(this)
+        .children()
+        .find("p time")
+        .text()
+        .trim();
       console.log(result);
-    // })
-//   });
-// });
+    })
+  });
+});
 
-      // Create a new Article using the `result` object built from scraping
-      // db.Article.create(result)
-      //   .then(function(dbArticle) {
-      //     console.log(dbArticle);
-      //     //send them back to the client
-      //     // res.json(dbArticle);
-      //   })
-      //   .catch(function(err) {
-      //     console.log(err);
-      //   });
-    }); //cheerio grab html ends
-    // send message to client
-    res.send("Scrape complete!");  //works as expected
-  }); //axios.get ends
-}); //app.get /scrape ends
+    //Create a new Article using the `result` object built from scraping
+//       db.Article.create(result)
+//         .then(function(dbArticle) {
+//           console.log(dbArticle);
+//           //send them back to the client
+//           // res.json(dbArticle);
+//         })
+//         .catch(function(err) {
+//           console.log(err);
+//         });
+//     }); //cheerio grab html ends
+//     // send message to client
+//     res.send("Scrape complete!");  //works as expected
+//   }); //axios.get ends
+// }); //app.get /scrape ends
 
-
-// // Route for getting all Articles from the db
+// ============ Route for getting all Articles from the db =========
 // app.get("/articles", function(req, res) {
 //   // Grab every document in the Articles collection
 //   db.Article.find({})
@@ -154,6 +157,9 @@ app.get("/scrape", function(req, res) {
 //       res.json(err);
 //     });
 // });
+
+// ============ Route for Deleting all articles from the database ==========
+
 
 
 app.listen(process.env.PORT || 3000, function() {

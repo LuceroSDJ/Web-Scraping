@@ -12,22 +12,24 @@ const ArticleSchema = new Schema({
     title: {
         type: String,
         // required: true,
-        unique: true
+        // unique: true
     },
     URL: {
-        type: String
+        type: String,
+        // required: true,
+        unique: true
         // required: true
     },
     summary: {
-        type: String,
-        // required: true,
-        unique: true,
-        validate: [
-            function(input) {
-              return input.length <= 300;
-            },
-            "too long"
-        ]
+        type: String
+    //     required: true,
+    //     unique: true,
+    //     validate: [
+    //         function(input) {
+    //           return input.length <= 300;
+    //         },
+    //         "too long"
+    //     ]
     },
     dateScraped: {
         type: Date,
