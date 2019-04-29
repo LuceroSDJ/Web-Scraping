@@ -1,4 +1,15 @@
 # Web-Scraping
+# Please accept my apologies. This assignment is still incomplete and has not been deployed to HEROKU.
+## I had to create a new REPO, therefore, my most current code is NOT in this repository.
+
+## This is the link to the second repo I am currently working on:
+## [https://github.com/LuceroSDJ/Mongoose-N-Cheerio-WebScraping](https://github.com/LuceroSDJ/Mongoose-N-Cheerio-WebScraping)
+
+## This is how my app works so far (not as exprected & I will keep working on it)
+## [https://lucerosdj.github.io/Mongoose-N-Cheerio-WebScraping/](https://lucerosdj.github.io/Mongoose-N-Cheerio-WebScraping/)
+
+
+## GOAL
 In this assignment, you'll create a web app that lets users view and leave comments on the latest news. But you're not going to actually write any articles; instead, you'll flex your Mongoose and Cheerio muscles to scrape news from another site.
 
 ## Instructions

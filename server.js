@@ -69,7 +69,7 @@ app.set('view engine', 'handlebars');
 // What it the server.js file doing?
 console.log("\n********************\n" +
         "Grabbing data\n" +
-        "from wsj.com :" +
+        "from website :" +
         "\n**********************\n");
 
 // A GET route for scraping the website
@@ -124,25 +124,25 @@ app.get("/scrape", function(req, res) {
         .text()
         .trim();
       console.log(result);
-    })
-  });
-});
+//     })
+//   });
+// });
 
-    //Create a new Article using the `result` object built from scraping
-//       db.Article.create(result)
-//         .then(function(dbArticle) {
-//           console.log(dbArticle);
-//           //send them back to the client
-//           // res.json(dbArticle);
-//         })
-//         .catch(function(err) {
-//           console.log(err);
-//         });
-//     }); //cheerio grab html ends
-//     // send message to client
-//     res.send("Scrape complete!");  //works as expected
-//   }); //axios.get ends
-// }); //app.get /scrape ends
+    // Create a new Article using the `result` object built from scraping
+      db.Article.create(result)
+        .then(function(dbArticle) {
+          console.log(dbArticle);
+          //send them back to the client
+          // res.json(dbArticle);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    }); //cheerio grab html ends
+    // send message to client
+    res.send("Scrape complete!");  //works as expected
+  }); //axios.get ends
+}); //app.get /scrape ends
 
 // ============ Route for getting all Articles from the db =========
 // app.get("/articles", function(req, res) {
