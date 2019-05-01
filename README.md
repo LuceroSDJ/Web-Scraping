@@ -1,8 +1,8 @@
 # Web-Scraping
-# Please accept my apologies. This assignment is still incomplete and has not been deployed to HEROKU.
-## I had to create a new REPO, therefore, my most current code is NOT in this repository.
 
-## This is the link to the second repo I am currently working on:
+## Please accept my apologies. I had to create a new REPO, therefore, my most current code is NOT in this repository.
+
+## This is the link to the second repo I created:
 ## [https://github.com/LuceroSDJ/Mongoose-N-Cheerio-WebScraping](https://github.com/LuceroSDJ/Mongoose-N-Cheerio-WebScraping)
 
 ## GOAL
